@@ -1,7 +1,6 @@
 import time
 import psutil
 import GPUtil
-import psutil
 from bs4 import BeautifulSoup
 import requests
 import cpuinfo
