@@ -29,7 +29,7 @@ Obtaining exact power consumption values can be challenging due to the many fact
     ```
     !pip install psutil
     !pip install GPUtil
-    !pip install cpuinfo
+    !pip install py-cpuinfo
     !pip install beautifulsoup4
     !pip install requests
     ```
