@@ -56,7 +56,6 @@ def get_gpu_tdp(gpu_name):
         if search_results:
             for result in search_results:
                 if gpu_name.lower() in result.get_text().lower():
-                    print(result)
                     gpu_url = "https://www.techpowerup.com" + result["href"]
                     gpu_response = requests.get(gpu_url)
 
@@ -132,7 +131,6 @@ def main():
         gpu_model = get_gpu_model()
         if gpu_model:
             print(f"Your GPU model is: {gpu_model}")
-            print(get_text_after_substring_2(gpu_model))
             gpu_max_power = get_gpu_tdp(get_text_after_substring_2(gpu_model))
             if gpu_max_power:
                 print(f"The max power of your GPU is: {gpu_max_power}")
