@@ -1,6 +1,7 @@
 import time
 import psutil
 import GPUtil
+import psutil
 from bs4 import BeautifulSoup
 import requests
 import cpuinfo
@@ -8,10 +9,17 @@ import time
 import re
 
 def get_text_before_substring(text):
-    pattern = re.compile(r"(.+)\s+\d+-Core")
-    match = pattern.search(text)
-    if match:
-        return match.group(1).strip()  # Return text before the "<integer>-Core"
+    if text.startswith("Intel"):
+        pattern = re.compile(r"i(.+)\s+CPU")
+        match = pattern.search(text)
+        if match:
+            return "Core i"+ match.group(1).strip() 
+    else:
+        pattern = re.compile(r"(.+)\s+(CPU|\d+-Core)")
+        match = pattern.search(text)
+        if match:
+            return match.group(1).strip() 
+     # Return text before the "CPU" or "<integer>-Core"
     return None
 
 def get_text_after_substring_2(text):
@@ -28,7 +36,6 @@ def get_cpu_tdp(cpu_name):
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         table = soup.find("table", {"class": "processors"})
-
         if table:
            for a_tag in table.find_all('a'):
                 for a_tag in table.find_all('a'):
@@ -49,7 +56,6 @@ def get_gpu_tdp(gpu_name):
 
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
-        print(soup)
         search_results = soup.find_all("a")
 
         if search_results:
@@ -129,7 +135,7 @@ def main():
             print(f"Could not find the TDP of your CPU.")
         gpu_model = get_gpu_model()
         if gpu_model:
-            print(f"Your GPU model is: {gpu_model}")
+            print(f"Your GPU model is: {gpu_model}") 
             gpu_max_power = get_gpu_tdp(get_text_after_substring_2(gpu_model))
             if gpu_max_power:
                 print(f"The max power of your GPU is: {gpu_max_power}")
